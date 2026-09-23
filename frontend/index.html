@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HYL GYM - Dashboard & Sync</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="logo">
+      <span>HYL</span><span class="highlight">GYM</span>
+    </div>
+    <nav>
+      <a href="#" class="nav-link active">Dashboard</a>
+      <a href="#" class="nav-link">Rutinas</a>
+      <a href="#" class="nav-link">Clases</a>
+    </nav>
+    <div id="authStatus">
+      <!-- Se renderiza dinámicamente desde App.renderAuthUI() -->
+    </div>
+  </header>
+
+  <!-- Contenedor Principal -->
+  <main class="container">
+    <section class="hero-card">
+      <h1>PANEL DE CONTROL <span class="highlight">ATHLETE</span></h1>
+      <p>Gestión de rutinas, clases y sincronización offline en tiempo real.</p>
+    </section>
+
+    <!-- Indicador de Estado API -->
+    <div class="status-bar">
+      <span>Estado del Servidor Backend: </span>
+      <span id="apiStatus" class="badge badge-offline">Desconectado</span>
+    </div>
+
+    <!-- Grid de Métricas -->
+    <div class="grid-cards">
+      <div class="card">
+        <h3>Rutinas Disponibles</h3>
+        <span class="metric-number" id="totalRoutines">0</span>
+      </div>
+      <div class="card">
+        <h3>Clases Programadas</h3>
+        <span class="metric-number" id="totalClasses">0</span>
+      </div>
+      <div class="card">
+        <h3>Sincronización Offline</h3>
+        <span class="metric-number" id="syncStatus">OK</span>
+      </div>
+    </div>
+
+    <!-- Sección de Rutinas -->
+    <section class="content-section" id="routinesSection">
+      <h2>Rutinas Registradas</h2>
+      <div id="routinesList" class="routines-grid">
+        <p class="muted-text">Cargando rutinas...</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Carga de módulos en orden jerárquico -->
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/routines.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
