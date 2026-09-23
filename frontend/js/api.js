@@ -1,7 +1,9 @@
 /**
- * Cliente HTTP base para la API
+ * Cliente HTTP base para la API REST de HyL GYM
  */
-const API_BASE_URL = 'http://localhost:5000/api';
+const API_BASE_URL = (window.location.port === '5000' || window.location.hostname === 'localhost' && window.location.port === '5000')
+  ? '/api'
+  : 'http://localhost:5000/api';
 
 class HttpClient {
   static async request(endpoint, options = {}) {
@@ -26,17 +28,23 @@ class HttpClient {
 
       if (response.status === 401) {
         localStorage.removeItem('auth_token');
+        localStorage.removeItem('user_data');
         window.dispatchEvent(new CustomEvent('auth:unauthorized'));
       }
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || `Error HTTP: ${response.status}`);
+        throw new Error(errorData.error || errorData.message || `Error HTTP: ${response.status}`);
+      }
+
+      // Handle 204 No Content
+      if (response.status === 204) {
+        return null;
       }
 
       return await response.json();
     } catch (error) {
-      console.error(`[API Error] -> ${endpoint}:`, error.message);
+      console.warn(`[API] ${options.method || 'GET'} ${endpoint} ->`, error.message);
       throw error;
     }
   }
@@ -50,5 +58,9 @@ class HttpClient {
       method: 'POST',
       body: JSON.stringify(body),
     });
+  }
+
+  static delete(endpoint) {
+    return this.request(endpoint, { method: 'DELETE' });
   }
 }

@@ -3,69 +3,208 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HYL GYM - Dashboard & Sync</title>
-  <link rel="stylesheet" href="css/styles.css">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <title>HYL GYM - Plataforma de Alto Rendimiento</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts: Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              green: '#00e676',
+              navy: '#0b132b',
+              cardBg: '#1c2541'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
 </head>
-<body>
+<body class="bg-[#0b132b] text-slate-100 font-sans min-h-screen flex flex-col antialiased">
 
-  <!-- Navbar -->
-  <header class="navbar">
-    <div class="logo">
-      <span>HYL</span><span class="highlight">GYM</span>
-    </div>
-    <nav>
-      <a href="#" class="nav-link active">Dashboard</a>
-      <a href="#" class="nav-link">Rutinas</a>
-      <a href="#" class="nav-link">Clases</a>
-    </nav>
-    <div id="authStatus">
-      <!-- Se renderiza dinámicamente desde App.renderAuthUI() -->
+  <!-- NAVBAR -->
+  <header class="bg-[#1c2541] border-b border-slate-700 sticky top-0 z-50 shadow-lg">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <div class="flex items-center space-x-3">
+          <div class="bg-[#00e676] text-black font-black px-3 py-1.5 rounded-lg text-lg flex items-center space-x-2">
+            <i class="fa-solid fa-bolt"></i>
+            <span>HYLGYM</span>
+          </div>
+        </div>
+        
+        <div id="user-auth-btn-container" class="flex items-center space-x-2">
+          <span class="bg-[#00e676] text-black text-xs font-black px-2.5 py-1 rounded-md uppercase">ATLETA PRO</span>
+          <span class="text-sm font-bold text-white">Juan Pérez</span>
+        </div>
+      </div>
     </div>
   </header>
 
-  <!-- Contenedor Principal -->
-  <main class="container">
-    <section class="hero-card">
-      <h1>PANEL DE CONTROL <span class="highlight">ATHLETE</span></h1>
-      <p>Gestión de rutinas, clases y sincronización offline en tiempo real.</p>
-    </section>
+  <!-- CONTENIDO PRINCIPAL -->
+  <main class="max-w-3xl mx-auto px-4 py-6 flex-grow space-y-6 w-full">
 
-    <!-- Indicador de Estado API -->
-    <div class="status-bar">
-      <span>Estado del Servidor Backend: </span>
-      <span id="apiStatus" class="badge badge-offline">Desconectado</span>
+    <!-- STATUS BAR / INDICADOR DE SINCRONIZACIÓN -->
+    <div class="bg-[#1c2541] p-4 rounded-xl border border-slate-700 flex items-center justify-between text-xs sm:text-sm font-medium">
+      <div class="flex items-center space-x-2">
+        <span class="text-slate-400">Estado:</span>
+        <span id="sync-status" class="bg-emerald-950 text-[#00e676] border border-emerald-500/30 px-2.5 py-1 rounded-full flex items-center space-x-1.5 font-semibold">
+          <span class="w-2 h-2 rounded-full bg-[#00e676]"></span>
+          <span>SINCRONIZADO</span>
+        </span>
+      </div>
+
+      <button id="btn-manual-sync" class="bg-slate-800 hover:bg-slate-700 text-white px-3 py-1.5 rounded-lg border border-slate-600 transition flex items-center space-x-1.5 text-xs">
+        <i class="fa-solid fa-rotate"></i>
+        <span>Sincronizar</span>
+      </button>
     </div>
 
-    <!-- Grid de Métricas -->
-    <div class="grid-cards">
-      <div class="card">
-        <h3>Rutinas Disponibles</h3>
-        <span class="metric-number" id="totalRoutines">0</span>
+    <!-- TARJETAS DE CLASES -->
+    <div class="space-y-4">
+      
+      <!-- Clase 1: Spinning Indoor -->
+      <div class="bg-[#1c2541] p-5 rounded-2xl border border-slate-700 space-y-4">
+        <div class="flex justify-between items-start">
+          <div>
+            <h3 class="text-lg font-bold text-white">Spinning Power Bike</h3>
+            <p class="text-xs text-slate-400 mt-1"><i class="fa-solid fa-clock mr-1"></i> jue, 17 sept, 23:00</p>
+            <p class="text-xs text-slate-400"><i class="fa-solid fa-location-dot mr-1"></i> Salón Indoor Bike (Piso 2)</p>
+          </div>
+          <span class="bg-emerald-500/10 text-[#00e676] text-xs font-bold px-2.5 py-1 rounded-full">15 CUPOS</span>
+        </div>
+        <button onclick="reservarClase('class-spinning-101')" class="w-full bg-[#00e676] hover:bg-emerald-400 text-black font-extrabold py-3 rounded-xl transition">
+          Reservar Mi Cupo
+        </button>
       </div>
-      <div class="card">
-        <h3>Clases Programadas</h3>
-        <span class="metric-number" id="totalClasses">0</span>
-      </div>
-      <div class="card">
-        <h3>Sincronización Offline</h3>
-        <span class="metric-number" id="syncStatus">OK</span>
-      </div>
-    </div>
 
-    <!-- Sección de Rutinas -->
-    <section class="content-section" id="routinesSection">
-      <h2>Rutinas Registradas</h2>
-      <div id="routinesList" class="routines-grid">
-        <p class="muted-text">Cargando rutinas...</p>
+      <!-- Clase 2: Yoga Vinyasa -->
+      <div class="bg-[#1c2541] p-5 rounded-2xl border border-slate-700 space-y-4">
+        <div class="flex justify-between items-start">
+          <div>
+            <h3 class="text-lg font-bold text-white">Yoga Vinyasa & Core</h3>
+            <p class="text-xs text-slate-400 mt-1"><i class="fa-solid fa-user-ninja mr-1"></i> Coach: Mateo Morales</p>
+            <p class="text-xs text-slate-400"><i class="fa-solid fa-clock mr-1"></i> vie, 18 sept, 12:30</p>
+            <p class="text-xs text-slate-400"><i class="fa-solid fa-location-dot mr-1"></i> Salón Zen (Piso 3)</p>
+          </div>
+          <span class="bg-emerald-500/10 text-[#00e676] text-xs font-bold px-2.5 py-1 rounded-full">19 CUPOS</span>
+        </div>
+        <button onclick="reservarClase('class-yoga-202')" class="w-full bg-[#00e676] hover:bg-emerald-400 text-black font-extrabold py-3 rounded-xl transition">
+          Reservar Mi Cupo
+        </button>
       </div>
-    </section>
+
+      <!-- Clase 3: HIIT 360 -->
+      <div class="bg-[#1c2541] p-5 rounded-2xl border border-slate-700 space-y-4">
+        <div class="flex justify-between items-start">
+          <div>
+            <h3 class="text-lg font-bold text-white">Cross Training HIIT 360</h3>
+            <p class="text-xs text-slate-400 mt-1"><i class="fa-solid fa-user-ninja mr-1"></i> Coach: David Salazar</p>
+            <p class="text-xs text-slate-400"><i class="fa-solid fa-clock mr-1"></i> sáb, 19 sept, 15:00</p>
+            <p class="text-xs text-slate-400"><i class="fa-solid fa-location-dot mr-1"></i> Zona Funcional Exterior</p>
+          </div>
+          <span class="bg-emerald-500/10 text-[#00e676] text-xs font-bold px-2.5 py-1 rounded-full">12 CUPOS</span>
+        </div>
+        <button onclick="reservarClase('class-hiit-303')" class="w-full bg-[#00e676] hover:bg-emerald-400 text-black font-extrabold py-3 rounded-xl transition">
+          Reservar Mi Cupo
+        </button>
+      </div>
+
+    </div>
   </main>
 
-  <!-- Carga de módulos en orden jerárquico -->
-  <script src="js/api.js"></script>
-  <script src="js/auth.js"></script>
-  <script src="js/routines.js"></script>
-  <script src="js/app.js"></script>
+  <!-- LÓGICA JAVASCRIPT DE RESERVA OFFLINE Y SINCRONIZACIÓN -->
+  <script>
+    // Detección de HOST para compatibilidad PC / Emulador
+    const API_HOST = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? 'localhost' : '10.0.2.2';
+    const API_URL = `http://${API_HOST}:5000/api`;
+
+    // Actualizar badge visual del estado
+    function actualizarEstadoVisual() {
+      const cola = JSON.parse(localStorage.getItem('pending_bookings')) || [];
+      const syncStatus = document.getElementById('sync-status');
+      
+      if (cola.length > 0) {
+        syncStatus.className = 'bg-amber-950 text-amber-400 border border-amber-500/30 px-2.5 py-1 rounded-full flex items-center space-x-1.5 font-semibold';
+        syncStatus.innerHTML = `<span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span><span>PENDIENTE SINCRONIZAR (${cola.length})</span>`;
+      } else {
+        syncStatus.className = 'bg-emerald-950 text-[#00e676] border border-emerald-500/30 px-2.5 py-1 rounded-full flex items-center space-x-1.5 font-semibold';
+        syncStatus.innerHTML = `<span class="w-2 h-2 rounded-full bg-[#00e676]"></span><span>SINCRONIZADO</span>`;
+      }
+    }
+
+    // 1. Función para Reservar Clase (Online -> Directo a backend | Offline -> LocalStorage)
+    async function reservarClase(classId) {
+      const nuevaReserva = {
+        class_id: classId,
+        user_id: 1, // Usuario de prueba por defecto
+        created_at: new Date().toISOString()
+      };
+
+      try {
+        const res = await fetch(`${API_URL}/classes/book`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(nuevaReserva)
+        });
+
+        if (!res.ok) throw new Error('Servidor offline');
+
+        alert('¡Reserva realizada en línea con éxito!');
+      } catch (error) {
+        console.warn('Backend desconectado. Guardando reserva en modo Offline...', error);
+
+        // Guardar en la cola local de LocalStorage
+        let cola = JSON.parse(localStorage.getItem('pending_bookings')) || [];
+        cola.push(nuevaReserva);
+        localStorage.setItem('pending_bookings', JSON.stringify(cola));
+
+        actualizarEstadoVisual();
+        alert('📱 Modo Offline: Tu reserva fue guardada en el dispositivo. Se enviará a la base de datos al sincronizar.');
+      }
+    }
+
+    // 2. Función para Sincronizar Reservas Pendientes con SQLite
+    async function sincronizarReservasOffline() {
+      const cola = JSON.parse(localStorage.getItem('pending_bookings')) || [];
+
+      if (cola.length === 0) {
+        alert('No hay reservas pendientes por sincronizar.');
+        return;
+      }
+
+      try {
+        const res = await fetch(`${API_URL}/sync`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ bookings: cola })
+        });
+
+        if (res.ok) {
+          localStorage.removeItem('pending_bookings');
+          actualizarEstadoVisual();
+          alert('✅ ¡Sincronización exitosa! La reserva offline ya se guardó en la base de datos SQLite.');
+        } else {
+          throw new Error('Error en el servidor al sincronizar');
+        }
+      } catch (err) {
+        console.error('No se pudo conectar con el servidor backend:', err);
+        alert('❌ No se pudo sincronizar. Asegúrate de que el servidor en Node.js esté encendido.');
+      }
+    }
+
+    // Event listeners al cargar
+    document.getElementById('btn-manual-sync')?.addEventListener('click', sincronizarReservasOffline);
+    actualizarEstadoVisual();
+  </script>
 </body>
 </html>
